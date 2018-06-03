@@ -2,11 +2,12 @@ CFLAGS := -g -std=c99 -Wall -Wextra -Wpedantic
 CFLAGS += -m32 -O1 -ffreestanding
 
 SRCS := $(wildcard *.c)  # usar wildcard *.c
+SRCS += $(wildcard lib/*.c)  # usar wildcard *.c
 OBJS := $(patsubst %.c,%.o,$(SRCS))  # usar patsubst sobre SRCS
 
 QEMU := qemu-system-i386 -serial mon:stdio
 KERN := kern2
-BOOT := -kernel $(KERN)
+BOOT := -kernel $(KERN) $(QEMU_EXTRA)
 
 qemu: $(KERN)
 	$(QEMU) $(BOOT)
