@@ -62,9 +62,9 @@ void contador_run() {
 
     *(--b) = (uintptr_t)contador_yield;
 
-    *(--b) = 100;
-    *(--b) = 100;
-    *(--b) = 100;
+    *(--b) = 0;
+    *(--b) = 0;
+    *(--b) = 0;
 
     esp = *b;
 
