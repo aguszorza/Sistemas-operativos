@@ -18,6 +18,6 @@ task_swap:
 
 	movl 4(%esp), %eax //eax = puntero a esp siguiente
 
-	xchgl (%eax), %esp
+	xchgl %esp, 0(%eax)
 
 	ret

@@ -4,16 +4,16 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
-
-struct multiboot_info;
+#include "multiboot.h"
+#include "lib/string.h"
 
 // mbinfo.c (ejercicio opcional kern2-meminfo)
-void print_mbinfo(const struct multiboot_info *mbi);
+void print_memory(const multiboot_info_t* mbi);
 
 // stacks.S
 void two_stacks(void);
 
-// kern2.c
+// two_stacks_c.c
 void two_stacks_c(void);
 
 // tasks.S
