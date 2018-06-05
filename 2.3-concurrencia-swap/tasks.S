@@ -16,11 +16,8 @@ vga_write2:
 .globl task_swap
 task_swap:
 
-	movl 4(%esp), %eax
+	movl 4(%esp), %eax //eax = puntero a esp siguiente
 
-	movl 0(%eax), %ecx //guardo el esp siguiente
-	movl %esp, 0(%eax)
-	movl %ecx, %esp
-
+	xchgl (%eax), %esp
 
 	ret
