@@ -46,6 +46,7 @@ static void contador_yield(unsigned lim, uint8_t linea, char color) {
     }
 }
 
+void halt();
 
 void contador_run() {
 
@@ -60,13 +61,11 @@ void contador_run() {
     *(--b) = 1;
     *(--b) = 100;
 
+    *(--b) = (uintptr_t)halt;
     *(--b) = (uintptr_t)contador_yield;
 
-    *(--b) = 0;
-    *(--b) = 0;
-    *(--b) = 0;
 
-    esp = *b;
+    esp = (uintptr_t)b;
 
     task_exec((uintptr_t) contador_yield, (uintptr_t) a);
 

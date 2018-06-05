@@ -15,18 +15,12 @@ vga_write2:
 
 .globl task_swap
 task_swap:
-	push %ebx
-	push %esi
-	push %edi
 
-	movl 16(%esp), %esi
+	movl 4(%esp), %eax
 
-	movl (%esi), %ebx //guardo el esp siguiente
-	movl %esp, (%esi)
-	movl %ebx, %esp
+	movl 0(%eax), %ecx //guardo el esp siguiente
+	movl %esp, 0(%eax)
+	movl %ecx, %esp
 
-	pop %edi
-	pop %esi
-	pop %ebx
 
 	ret
