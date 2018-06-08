@@ -1,10 +1,10 @@
 CFLAGS := -g -std=c99 -Wall -Wextra -Wpedantic
 CFLAGS += -m32 -O1 -ffreestanding -fasm -fno-omit-frame-pointer
 
-#########CPPFLAGS += -nostdinc -idirafter lib
+##CPPFLAGS += -nostdinc -idirafter lib
 
-########GCC_PATH := /usr/lib/gcc/x86_64-linux-gnu/6
-#####CPPFLAGS += -I$(GCC_PATH)/include -I$(GCC_PATH)/include-fixed
+GCC_PATH := /usr/lib/gcc/x86_64-linux-gnu/6
+CPPFLAGS += -I$(GCC_PATH)/include -I$(GCC_PATH)/include-fixed
 
 SRCS := $(wildcard *.c)  # usar wildcard *.c
 SRCS += $(wildcard lib/*.c)  # usar wildcard *.c
