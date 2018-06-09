@@ -11,7 +11,6 @@ multiboot:
     .long -(MULTIBOOT_HEADER_MAGIC)
 
 .globl _start
-.globl halt
 _start:
     // Paso 1: Configurar el stack antes de llamar a kmain.
     movl $0, %ebp
@@ -31,6 +30,7 @@ _start:
     // ...
 
     call kmain
+    
 halt:
     hlt
     jmp halt

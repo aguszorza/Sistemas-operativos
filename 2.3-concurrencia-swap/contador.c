@@ -16,6 +16,12 @@ static void yield() {
         task_swap(&esp);
 }
 
+static void exit() {
+    uintptr_t tmp = esp;
+    esp = 0;
+    task_swap(&tmp);
+}
+
 static void contador_yield(unsigned lim, uint8_t linea, char color) {
     char counter[COUNTLEN] = {'0'};  // ASCII digit counter (RTL).
 
@@ -26,7 +32,7 @@ static void contador_yield(unsigned lim, uint8_t linea, char color) {
         unsigned p = 0;
         unsigned long long i = 0;
 
-        while (i++ < DELAY(6))  // Usar un entero menor si va demasiado lento.
+        while (i++ < DELAY(8))  // Usar un entero menor si va demasiado lento.
             ;
 
         while (counter[p] == '9') {
@@ -46,36 +52,33 @@ static void contador_yield(unsigned lim, uint8_t linea, char color) {
     }
 }
 
-void halt();
 
 void contador_run() {
 
     uintptr_t *a = stack1 + sizeof(stack1);
     uintptr_t *b = stack2 + sizeof(stack2);
 
-    *(--a) = 0x2F;
-    *(--a) = 0;
-    *(--a) = 100;
+    *(--a) = 0x2F;	//Color
+    *(--a) = 0;		//Linea
+    *(--a) = 100;	//Limite
 
-    *(--b) = 0x4F;
-    *(--b) = 1;
-    *(--b) = 100;
+    *(--b) = 0x4F;	//Color
+    *(--b) = 1;		//Linea
+    *(--b) = 90;	//Limite
 
-    //*(--b) = (uintptr_t)halt;
-    *(--b) = 0;
-    *(--b) = (uintptr_t)contador_yield;
+    //Direccion de retorno de la funcion contador_yield
+    *(--b) = (uintptr_t)exit;
+
+    //Direccion de retorno de la funcion task_swap en la primer iteracion
+    *(--b) = (uintptr_t)contador_yield;	
     
+    //Registros calle-saved (ebp, ebx, esi, edi)
     *(--b) = 0;
     *(--b) = 0;
     *(--b) = 0;
     *(--b) = 0;
-    
-
 
     esp = (uintptr_t)b;
 
     task_exec((uintptr_t) contador_yield, (uintptr_t) a);
-
-    //contador_yield(100, 0, 0x2F);
-    //contador_yield(100, 1, 0x4F);
 }
