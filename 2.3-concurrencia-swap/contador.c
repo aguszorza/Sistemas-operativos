@@ -3,7 +3,7 @@
 #define COUNTLEN 20
 #define TICKS (1ULL << 15)
 #define DELAY(x) (TICKS << (x))
-#define USTACK_SIZE 4096
+#define USTACK_SIZE 1024 
 
 static volatile char *const VGABUF = (volatile void *) 0xb8000;
 
@@ -26,7 +26,7 @@ static void contador_yield(unsigned lim, uint8_t linea, char color) {
         unsigned p = 0;
         unsigned long long i = 0;
 
-        while (i++ < DELAY(8))  // Usar un entero menor si va demasiado lento.
+        while (i++ < DELAY(6))  // Usar un entero menor si va demasiado lento.
             ;
 
         while (counter[p] == '9') {
@@ -50,8 +50,8 @@ void halt();
 
 void contador_run() {
 
-    uintptr_t *a = stack1 + USTACK_SIZE;
-    uintptr_t *b = stack2 + USTACK_SIZE;
+    uintptr_t *a = stack1 + sizeof(stack1);
+    uintptr_t *b = stack2 + sizeof(stack2);
 
     *(--a) = 0x2F;
     *(--a) = 0;
@@ -61,8 +61,15 @@ void contador_run() {
     *(--b) = 1;
     *(--b) = 100;
 
-    *(--b) = (uintptr_t)halt;
+    //*(--b) = (uintptr_t)halt;
+    *(--b) = 0;
     *(--b) = (uintptr_t)contador_yield;
+    
+    *(--b) = 0;
+    *(--b) = 0;
+    *(--b) = 0;
+    *(--b) = 0;
+    
 
 
     esp = (uintptr_t)b;

@@ -1,13 +1,13 @@
 #include "decls.h"
-#define USTACK_SIZE 4096
+#define USTACK_SIZE 1024
 
 static uint32_t stack1[USTACK_SIZE] __attribute__((aligned(4096)));
 static uint32_t stack2[USTACK_SIZE] __attribute__((aligned(4096)));
 
 void two_stacks_c() {
     // Inicializar al *tope* de cada pila.
-    uintptr_t *a = stack1 + USTACK_SIZE;
-    uintptr_t *b = stack2 + USTACK_SIZE;
+    uintptr_t *a = stack1 + sizeof(stack1);
+    uintptr_t *b = stack2 + sizeof(stack2);
 
     // Preparar, en stack1, la llamada:
     //vga_write("vga_write() from stack1", 15, 0x57);
