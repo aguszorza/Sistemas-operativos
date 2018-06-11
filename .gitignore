@@ -1,3 +1,4 @@
 # ignora los .o
 #para que no haga commit de ellos
 *.o
+kern2
