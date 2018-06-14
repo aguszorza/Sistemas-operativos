@@ -17,6 +17,14 @@ timer_asm:
 
         jmp ack_irq
 
+.globl keyboard_asm
+keyboard_asm:
+        pusha
+        call keyboard
+        popa
+
+        jmp ack_irq
+
 
 .globl divzero
 divzero:
