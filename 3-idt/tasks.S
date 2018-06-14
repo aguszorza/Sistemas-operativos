@@ -4,9 +4,9 @@ vga_write2:
     push %ebp
     movl %esp, %ebp
 
-    push %ecx
-    push %edx
-    push %eax
+    push %ecx //color
+    push %edx //linea
+    push %eax //mensaje
     call vga_write
 
     leave
