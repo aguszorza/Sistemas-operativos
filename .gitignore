@@ -2,3 +2,4 @@
 #para que no haga commit de ellos
 *.o
 kern2
+.~lock*
