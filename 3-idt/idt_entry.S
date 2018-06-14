@@ -4,4 +4,4 @@
 breakpoint:
     nop
     test %eax, %eax
-    iret
+    ret
