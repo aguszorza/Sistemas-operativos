@@ -37,6 +37,7 @@ static void irq_remap() {
 void idt_init(){
 
 	idt_install(T_BRKPT, breakpoint);
+	idt_install(T_DIVIDE, divzero);
 
 	idtr.base = (uintptr_t) idt;
 	idtr.limit = IDT_DESCRIPTORS * 8 - 1;

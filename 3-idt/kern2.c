@@ -18,14 +18,22 @@ void kmain(const multiboot_info_t *mbi) {
     two_stacks();
     two_stacks_c();
 
-    /////////////////contador_run();
+    contador_run();
 
 
     idt_init();
     irq_init();
     asm("int3");
 
-    vga_write2("Funciona vga_write2?", 18, 0xE0);
+
+    int8_t linea;
+    uint8_t color;
+
+    asm("div %4"
+        : "=a"(linea), "=c"(color)
+        : "0"(18), "1"(0xE0), "b"(0), "d"(0));
+
+    vga_write2("Funciona vga_write2?", linea, color);
 }
 
 
