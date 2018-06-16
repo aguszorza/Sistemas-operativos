@@ -6,15 +6,6 @@
  */
 static const uint8_t hz_ratio = 18;  // Default IRQ0 freq (18.222 Hz).
 
-#define CURSOR '^'
-#define LEFT_ARROW '='
-#define RIGHT_ARROW '#'
-#define MAX_WRITE 79
-#define SPACE ' '
-#define BACKSPACE '\b'
-#define ENTER '\n'
-#define CAPSLOCK '!'
-
 void timer() {
 	static char chars[81];
 	static unsigned ticks;
@@ -36,6 +27,17 @@ void timer() {
 /**
  * Mapa de "scancodes" a caracteres ASCII en un teclado QWERTY.
  */
+
+#define CURSOR '^'
+#define LEFT_ARROW '='		//Ascii que no se usa
+#define RIGHT_ARROW '#' 	//Ascii que no se usa
+#define CAPSLOCK '!'		//Ascii que no se usa
+#define MAX_WRITE 79
+#define SPACE ' '
+#define BACKSPACE '\b'
+#define ENTER '\n'
+
+
 static char klayout[128] = {
 	0,   0,   '1', '2', '3', '4', '5', '6', '7', '8',
 	'9', '0', 0,   0, BACKSPACE, 0, 'q', 'w', 'e', 'r',
@@ -92,6 +94,7 @@ void keyboard() {
 		return;
 		
 	if (klayout[code] < 'a' || klayout[code] > 'z') {
+		//No es letra, no aplica mayuscula
    		upper_shift = 0; 
 	}
 
