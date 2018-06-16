@@ -6,13 +6,14 @@
  */
 static const uint8_t hz_ratio = 18;  // Default IRQ0 freq (18.222 Hz).
 
-#define CURSOR '-'
+#define CURSOR '^'
 #define LEFT_ARROW '='
 #define RIGHT_ARROW '#'
 #define MAX_WRITE 79
 #define SPACE ' '
 #define BACKSPACE '\b'
 #define ENTER '\n'
+#define CAPSLOCK '!'
 
 void timer() {
     static char chars[81];
@@ -38,15 +39,15 @@ void timer() {
 static char klayout[128] = {
     0,   0,   '1', '2', '3', '4', '5', '6', '7', '8',
     '9', '0', 0,   0, BACKSPACE, 0, 'q', 'w', 'e', 'r',
-    't', 'y', 'u', 'i', 'o', 'p', 0,   0,   ENTER,   0,
+    't', 'y', 'u', 'i', 'o', 'p', '[', ']',   ENTER,   0,
     'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', '\'',
     0,   0,   0,   'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.',
-    '/', 0, 0, 0, SPACE, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,LEFT_ARROW,
+    '/', 0, 0, 0, SPACE, CAPSLOCK,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,LEFT_ARROW,
     0, RIGHT_ARROW}; 
 
 static const uint8_t KBD_PORT = 0x60;
 
-static bool use_upper(uint8_t code) {
+static bool use_upper(uint8_t code, int caps_lock) {
     static bool shift_pressed;
 
     bool released = code & 0x80;
@@ -56,6 +57,10 @@ static bool use_upper(uint8_t code) {
         shift_pressed = !released;
     }
 
+	if (caps_lock) {
+		return !shift_pressed;
+	}
+	
     return shift_pressed;
 }
 
@@ -70,6 +75,8 @@ void keyboard() {
     static char chars_selected[MAX_WRITE];
     static uint8_t idx = 0;
     static int init = 0;
+    static int caps_lock = 0;
+    
     if (init == 0) {
 		for (int i = 0; i < MAX_WRITE; i++) {
 			chars[i] = SPACE;
@@ -79,13 +86,12 @@ void keyboard() {
 	}
     asm volatile("inb %1,%0" : "=a"(code) : "n"(KBD_PORT));
 
-    int8_t upper_shift = use_upper(code) ? -32 : 0;
+    int8_t upper_shift = use_upper(code, caps_lock) ? -32 : 0;
 
     if (code >= sizeof(klayout) || !klayout[code])
         return;
         
     if (klayout[code] < 'a' || klayout[code] > 'z') {
-		//No son letras
    		upper_shift = 0; 
     }
 
@@ -118,6 +124,8 @@ void keyboard() {
 		}
 		idx = 0;
 		chars_selected[idx] = CURSOR;
+	} else if (klayout[code] == CAPSLOCK) {
+		caps_lock = caps_lock ? 0 : 1;
 	} else {
 		if (idx >= MAX_WRITE) {
 			chars_selected[idx] = SPACE;
