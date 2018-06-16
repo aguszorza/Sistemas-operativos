@@ -36,18 +36,17 @@ void timer() {
  * Mapa de "scancodes" a caracteres ASCII en un teclado QWERTY.
  */
 static char klayout[128] = {
-    0,   0,   '1', '2', '3', '4', '5', '6', '7', '8',             // 0-9
-    '9', '0', 0,   0, BACKSPACE, 0, 'q', 'w', 'e', 'r',                // 10-19
-    't', 'y', 'u', 'i', 'o', 'p', 0,   0,   ENTER,   0,               // 20-29
-    'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 0,   0,          // 30-40
+    0,   0,   '1', '2', '3', '4', '5', '6', '7', '8',
+    '9', '0', 0,   0, BACKSPACE, 0, 'q', 'w', 'e', 'r',
+    't', 'y', 'u', 'i', 'o', 'p', 0,   0,   ENTER,   0,
+    'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', '\'',
     0,   0,   0,   'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.',
-    0, 0, 0, 0, SPACE, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,LEFT_ARROW,
+    '/', 0, 0, 0, SPACE, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,LEFT_ARROW,
     0, RIGHT_ARROW}; 
 
 static const uint8_t KBD_PORT = 0x60;
 
 static bool use_upper(uint8_t code) {
-    // return false;
     static bool shift_pressed;
 
     bool released = code & 0x80;
@@ -84,6 +83,11 @@ void keyboard() {
 
     if (code >= sizeof(klayout) || !klayout[code])
         return;
+        
+    if (klayout[code] < 'a' || klayout[code] > 'z') {
+		//No son letras
+   		upper_shift = 0; 
+    }
 
 	if (klayout[code] == BACKSPACE) {
 		if (idx == 0) {
@@ -107,6 +111,7 @@ void keyboard() {
 		idx++;
 		chars_selected[idx] = CURSOR;
 	} else if (klayout[code] == ENTER) {
+		//Borra toda la linea
 		for (int i = 0; i < MAX_WRITE; i++) {
 			chars[i] = SPACE;
 			chars_selected[i] = SPACE;
