@@ -1,11 +1,7 @@
 # Sistemas-operativos-Kernel
 
 
-
-En el ultimo ejercicio no entendi lo que hay que hacer.
-No hice nada y funciona bien.
-
-Preguntar
+agregar en hanfler.c en los defines comentario de que usamos asciis quw no se usan
 
 
 
