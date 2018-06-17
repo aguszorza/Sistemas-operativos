@@ -8,7 +8,7 @@ static struct IDTR idtr;
 static struct Gate idt[IDT_DESCRIPTORS];
 
 
-// Multiboot siempre define "8" como el segmento de código.
+// Multiboot siempre define "8" como el segmento de codigo.
 // (Ver campo CS en `info registers` de QEMU.)
 static const uint8_t KSEG_CODE = 8;
 
@@ -54,7 +54,6 @@ void irq_init() {
 
     asm("sti");
 }
-
 
 
 void idt_install(uint8_t n, void (*handler)(void)){

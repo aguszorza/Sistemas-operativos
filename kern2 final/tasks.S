@@ -3,7 +3,7 @@
 .align 4
 .globl task_exec
 task_exec:
-    // Preámbulo estándar
+    // Preambulo estandar
     push %ebp
     movl %esp, %ebp
 

@@ -13,12 +13,14 @@ void two_stacks_c() {
     //vga_write("vga_write() from stack1", 15, 0x57);
 
     // AYUDA 1: se puede usar alguna forma de pre- o post-
-    // incremento/decremento, según corresponda:
+    // incremento/decremento, segun corresponda:
     //
     //     *(a++) = ...
     //     *(++a) = ...
     //     *(a--) = ...
     //     *(--a) = ...
+    
+    
     *(--a) = 0x57;
 
     *(--a) = 15;
@@ -34,7 +36,7 @@ void two_stacks_c() {
     //vga_write("vga_write() from stack2", 16, 0xD0);
 
     // AYUDA 3: para esta segunda llamada, usar esta forma de
-    // asignación alternativa:
+    // asignacion alternativa:
     b -= 3;
     b[0] = (uintptr_t) "vga_write() from stack2";
     b[1] = 16;
@@ -46,6 +48,7 @@ void two_stacks_c() {
     // Segunda llamada con ASM directo. Importante: no
     // olvidar restaurar el valor de %esp al terminar, y
     // compilar con: -fasm -fno-omit-frame-pointer.
+    
     asm("movl %0, %%esp; call *%1; movl %%ebp, %%esp"
         : /* no outputs */
         : "r"(b), "r"(vga_write));

@@ -17,15 +17,16 @@ _start:
     movl $kstack_end, %esp
     push %ebp
 
-    // Paso 2: pasar la información multiboot a kmain. Si el
-    // kernel no arrancó vía Multiboot, se debe pasar NULL.
+    // Paso 2: pasar la informacion multiboot a kmain. Si el
+    // kernel no arranco via Multiboot, se debe pasar NULL.
     movl $0, %ecx
     CMP $MULTIBOOT_BOOTLOADER_MAGIC, %eax
     cmove %ebx, %ecx
     push %ecx
-    // Usar una instrucción de comparación (TEST o CMP) para
+    
+    // Usar una instruccion de comparacion (TEST o CMP) para
     // comparar con MULTIBOOT_BOOTLOADER_MAGIC, pero no usar
-    // un salto a continuación, sino una instrucción CMOVcc
+    // un salto a continuacion, sino una instruccion CMOVcc
     // (copia condicional).
     // ...
 

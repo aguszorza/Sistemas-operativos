@@ -22,14 +22,14 @@ msg2:
 .align 4
 .globl two_stacks
 two_stacks:
-    // Preámbulo estándar
+    // Preambulo estandar
     push %ebp
     push %ebx
     movl %esp, %ebp
 
     // Registros para apuntar a stack1 y stack2.
     mov $stack1_top, %eax
-    mov $stack2_top, %ecx
+    mov $stack2_top, %ebx
 
     // Cargar argumentos a ambos stacks en paralelo. Ayuda:
     // usar offsets respecto a %eax ($stack1_top), y lo mismo
@@ -44,8 +44,8 @@ two_stacks:
     movl $msg2, -12(%ebx)
 
     // Realizar primera llamada con stack1. Ayuda: usar LEA
-    // con el mismo offset que los últimos MOV para calcular
-    // la dirección deseada de ESP.
+    // con el mismo offset que los ultimos MOV para calcular
+    // la direccion deseada de ESP.
     leal -12(%eax), %esp
     call vga_write
 

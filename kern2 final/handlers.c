@@ -2,7 +2,7 @@
 #include <stdbool.h>
 
 /**
- * Handler para el timer (IRQ0). Escribe un carácter cada segundo.
+ * Handler para el timer (IRQ0). Escribe un caracter cada segundo.
  */
 static const uint8_t hz_ratio = 18;  // Default IRQ0 freq (18.222 Hz).
 
@@ -106,6 +106,7 @@ void keyboard() {
 		chars[--idx] = SPACE;
 		chars_selected[idx] = CURSOR;
 	} else if (klayout[code] == LEFT_ARROW) {
+		
 		chars_selected[idx] = ' ';
 		if (idx == 0) {
 			idx++;
@@ -113,6 +114,7 @@ void keyboard() {
 		idx--;
 		chars_selected[idx] = CURSOR;
 	} else if (klayout[code] == RIGHT_ARROW) {
+		
 		chars_selected[idx] = SPACE;
 		if (idx == MAX_WRITE) {
 			idx--;
@@ -120,6 +122,7 @@ void keyboard() {
 		idx++;
 		chars_selected[idx] = CURSOR;
 	} else if (klayout[code] == ENTER) {
+		
 		//Borra toda la linea
 		for (int i = 0; i < MAX_WRITE; i++) {
 			chars[i] = SPACE;
@@ -128,8 +131,10 @@ void keyboard() {
 		idx = 0;
 		chars_selected[idx] = CURSOR;
 	} else if (klayout[code] == CAPSLOCK) {
+		
 		caps_lock = caps_lock ? 0 : 1;
 	} else {
+		
 		if (idx >= MAX_WRITE) {
 			chars_selected[idx] = SPACE;
 			while (idx--)
@@ -141,6 +146,7 @@ void keyboard() {
 		chars[idx++] = klayout[code] + upper_shift;
 		chars_selected[idx] = CURSOR;
 	}
+	
 	vga_write(chars, 19, 0x0A);
 	vga_write(chars_selected, 20, 0x0A);
 }

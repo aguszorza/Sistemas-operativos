@@ -3,7 +3,7 @@
 
 .globl ack_irq
 ack_irq:
-    // Indicar que se manejó la interrupción.
+    // Indicar que se manejo la interrupcion.
     movl $ACK_IRQ, %eax
     outb %al, $PIC1
     iret
@@ -49,7 +49,7 @@ divzero:
     pop %ecx
     pop %eax
 
-    // (5) Finalizar ejecución del manejador.
+    // (5) Finalizar ejecucion del manejador.
     iret
 
 
@@ -71,7 +71,7 @@ breakpoint:
     // (4) Restaurar registros.
     popa
 
-    // (5) Finalizar ejecución del manejador.
+    // (5) Finalizar ejecucion del manejador.
     iret
 
 .data
