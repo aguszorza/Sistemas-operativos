@@ -1,5 +1,5 @@
 CFLAGS := -g -std=c99 -Wall -Wextra -Wpedantic
-CFLAGS += -m32 -O1 -ffreestanding -fasm -fno-omit-frame-pointer
+CFLAGS += -m32 -O0 -ffreestanding -fasm -fno-omit-frame-pointer
 
 CPPFLAGS += -nostdinc -idirafter lib
 

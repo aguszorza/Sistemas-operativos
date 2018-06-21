@@ -31,7 +31,8 @@ _start:
     // ...
 
     call kmain
-    
+
+.globl halt  
 halt:
     hlt
     jmp halt

@@ -54,4 +54,7 @@ bool fmt_int(uint64_t val, char *s, size_t bufsize);
 
 __attribute__((regparm(2))) void vga_write_cyan(const char *s, int8_t linea);
 
+
+void contador_round_robin(unsigned lim, uint8_t linea, char color);
+
 #endif

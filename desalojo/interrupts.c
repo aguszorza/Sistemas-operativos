@@ -36,8 +36,8 @@ static void irq_remap() {
 
 void idt_init(){
 
-	//idt_install(T_BRKPT, breakpoint);
-	//idt_install(T_DIVIDE, divzero);
+	idt_install(T_BRKPT, breakpoint);
+	idt_install(T_DIVIDE, divzero);
 
 	idtr.base = (uintptr_t) idt;
 	idtr.limit = IDT_DESCRIPTORS * 8 - 1;
@@ -50,7 +50,7 @@ void irq_init() {
     irq_remap();
 
     idt_install(T_TIMER, timer_asm);
-    idt_install(T_KEYBOARD, ack_irq);
+    idt_install(T_KEYBOARD, keyboard_asm);
 
     asm("sti");
 }
