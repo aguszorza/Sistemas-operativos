@@ -3,7 +3,7 @@
 
 #define MAX_TASK 10
 #define IF 0x200
-#define USTACK_SIZE 4096 
+#define STACK_SIZE 4096 
 
 static struct Task tasks[MAX_TASK];
 static struct Task *current;
@@ -30,7 +30,7 @@ void spawn(void (*entry)(void)) {
 
     new_task->status = READY;
 
-    uint8_t* stack = &new_task->stack[USTACK_SIZE] - sizeof(struct TaskFrame);
+    uint8_t* stack = &new_task->stack[STACK_SIZE] - sizeof(struct TaskFrame);
     new_task->frame = (struct TaskFrame *)stack;
 
     new_task->frame->edi = 0;
@@ -42,14 +42,10 @@ void spawn(void (*entry)(void)) {
     new_task->frame->ecx = 0;
     new_task->frame->eax = 0;
 
-    new_task->frame->cs = 0x8;
+    new_task->frame->cs = 8;
     new_task->frame->eip = (uint32_t)entry;
-    uint32_t eflag = new_task->frame->eflags;
-    if (!(eflag & IF)) new_task->frame->eflags = eflag | IF;
+    new_task->frame->eflags = IF;
 }
-
-
-void halt();
 
 void sched(struct TaskFrame *tf) {
     struct Task *new = NULL;
@@ -60,10 +56,6 @@ void sched(struct TaskFrame *tf) {
     	if (&tasks[i] == old){
     		break;
     	}
-    }
-
-    if (i >= MAX_TASK){
-    	halt();
     }
 
     old->status = READY;
@@ -95,5 +87,5 @@ void sched(struct TaskFrame *tf) {
 
 void kill_task(){
 	current->status = DYING;
-	halt();
+    halt();
 }

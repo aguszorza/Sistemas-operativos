@@ -8,36 +8,6 @@
 
 static volatile char *const VGABUF = (volatile void *) 0xb8000;
 
-void contador_round_robin(unsigned lim, uint8_t linea, char color) {
-    char counter[COUNTLEN] = {'0'};  // ASCII digit counter (RTL).
-
-    while (lim--) {
-        char *c = &counter[COUNTLEN];
-        volatile char *buf = VGABUF + 160 * linea + 2 * (80 - COUNTLEN);
-
-        unsigned p = 0;
-        unsigned long long i = 0;
-
-        while (i++ < DELAY(6))  // Usar un entero menor si va demasiado lento.
-            ;
-
-        while (counter[p] == '9') {
-            counter[p++] = '0';
-        }
-
-        if (!counter[p]++) {
-            counter[p] = '1';
-        }
-
-        while (c-- > counter) {
-            *buf++ = *c;
-            *buf++ = color;
-        }
-    }
-
-    kill_task();
-}
-
 static uintptr_t esp;
 static uint32_t stack1[USTACK_SIZE] __attribute__((aligned(4096)));
 static uint32_t stack2[USTACK_SIZE] __attribute__((aligned(4096)));
@@ -53,7 +23,7 @@ static void exit() {
     task_swap(&tmp);
 }
 
-static void contador_yield(unsigned lim, uint8_t linea, char color) {
+static void contador(unsigned lim, uint8_t linea, char color, bool do_yield){
     char counter[COUNTLEN] = {'0'};  // ASCII digit counter (RTL).
 
     while (lim--) {
@@ -79,8 +49,19 @@ static void contador_yield(unsigned lim, uint8_t linea, char color) {
             *buf++ = color;
         }
 
-        yield();
+        if (do_yield){
+            yield();
+        }
     }
+}
+
+void contador_round_robin(unsigned lim, uint8_t linea, char color) {
+    contador (lim, linea, color, false);
+    kill_task();
+}
+
+static void contador_yield(unsigned lim, uint8_t linea, char color) {
+    contador (lim, linea, color, true);
 }
 
 

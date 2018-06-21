@@ -1,21 +1,19 @@
 #include "decls.h"
 #include "sched.h"
 
-#define USTACK_SIZE 4096
-
-#define MAX 100
+#define MAX 1500
 
 
 static void contador1() {
-    contador_round_robin(MAX, 2, 0x2F);
+    contador_round_robin(MAX, 2, (char)0xB0);
 }
 
 static void contador2() {
-    contador_round_robin(MAX, 3, 0x6F);
+    contador_round_robin(MAX, 3, (char)0xD0);
 }
 
 static void contador3() {
-    contador_round_robin(MAX, 4, 0x4F);
+    contador_round_robin(MAX, 4, (char)0xE0);
 }
 
 void contador_spawn() {
@@ -24,9 +22,7 @@ void contador_spawn() {
     spawn(contador3);
 }
 
-void antes_desalojo(){
-    //two_stacks();
-    //two_stacks_c();
+void lab_kernel(){
 
 	contador_run();
 
@@ -45,7 +41,6 @@ void antes_desalojo(){
     kill_task();
 }
 
-
 void kmain(const multiboot_info_t *mbi) {
     vga_write("kern2 loading.............", 8, 0x70);
 
@@ -59,11 +54,16 @@ void kmain(const multiboot_info_t *mbi) {
         print_mbinfo(mbi);
     }
 
-    spawn(antes_desalojo);
+    two_stacks();
+    two_stacks_c();
+
+    //Ejercicios antes del promocional
+    spawn(lab_kernel);
+
+    //Ejercicio promocional
     contador_spawn();
     sched_init();
 
     idt_init();
     irq_init();
 }
-
